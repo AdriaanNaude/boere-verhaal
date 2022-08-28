@@ -3,18 +3,31 @@ import random
 class Persona:
     player_inventory = ["gun", "red_potion"]
     enemy_inventory = []
+    base_attack_player = random.randrange(10,20)
+    base_attack_enemy = random.randrange(15, 30)
 
     def __init__(self, name, health=100):
         self.name=name
         self.health=health
 
-    def attack(self):
-        self.health -= random.randrange(10,20)
+    def reset(self):
+        self.health = 100
+
+    # actions
+    def enemy_attack(self):
+        self.health -= self.base_attack_enemy
         if self.health <= 0:
             print(str(self.health) + " " + self.name + " has fallen ")
         else:
             print(str(self.health) + " " + self.name + " is brushed! ")
 
+    def player_attack(self):
+        self.health -= self.base_attack_player
+        if self.health <= 0:
+            print(str(self.health) + " " + self.name + " has fallen ")
+        else:
+            print(str(self.health) + " " + self.name + " is brushed! ")
+             
     def heal(self):
         for i in self.player_inventory:
             if i == "red_potion":
@@ -39,6 +52,7 @@ class Persona:
         else:
             print(self.name + " has insinerated your courps")
 
+    # game systems
     def p_inventory(self):
         i = self.player_inventory
         print(i)
@@ -58,19 +72,27 @@ class player(Persona):
 e = Enemy()
 p = player()
 
+def item_use(user_input):
+    if user_input == "i":
+      x = input("Item?: ")
+    if x == "1":
+        p.heal()
+    """
+    elif x == "2"
+        e.attack()    
+    """
 while p.health > 0:
 
     turn = input("Your turn: ")
 
     if turn == "w":
-        e.attack()
-        p.attack()
+        e.enemy_attack()
+        p.player_attack()
 
-    elif turn == "d":
-        p.heal()
-
-    elif turn == "a":
+    # inventory system aanwerk
+    elif turn == "i":
         p.p_inventory()
+        item_use(turn)
 
     elif turn == "x":
         break
@@ -81,4 +103,4 @@ while p.health > 0:
 
     elif e.health <= 0:
         p.enemy_drop()
-
+        e.reset()
