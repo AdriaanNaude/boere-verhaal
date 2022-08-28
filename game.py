@@ -1,7 +1,7 @@
 import random
 
 class Persona:
-    hero_inventory = ["gun", "red_potion"]
+    player_inventory = ["gun", "red_potion"]
     enemy_inventory = []
 
     def __init__(self, name, health=100):
@@ -16,30 +16,31 @@ class Persona:
             print(str(self.health) + " " + self.name + " is brushed! ")
 
     def heal(self):
-        for i in self.hero_inventory:
+        for i in self.player_inventory:
             if i == "red_potion":
                 self.health += random.randrange(10,20)
                 print(str(self.health) + " " + self.name + " was heald!! ")
-                self.hero_inventory.remove(i)
+                self.player_inventory.remove(i)
 
     def enemy_drop(self):
         if self.enemy_inventory == True:
             print(self.name + " has picked up a item")
-            self.hero_inventory.append(self.enemy_inventory[0])
+            self.player_inventory.append(self.enemy_inventory[0])
             self.enemy_inventory.remove()
         else:
             print(self.name + " out of breath, but a live you press forward")
 
-    def hero_drop(self):
-        if self.hero_inventory == True:
+    def player_drop(self):
+        count = len(self.player_inventory)
+        if count > 0:
             print(self.name + " has taken a item")
-            self.enemy_inventory.append(self.hero_inventory[0])
-            self.hero_inventory.remove()
+            self.enemy_inventory.append(self.player_inventory[0])
+            self.player_inventory.remove(self.player_inventory[0])
         else:
             print(self.name + " has insinerated your courps")
 
     def p_inventory(self):
-        i = self.hero_inventory
+        i = self.player_inventory
         print(i)
 
     def e_inventory(self):
@@ -50,35 +51,34 @@ class Enemy(Persona):
     def __init__(self):
         super().__init__("Combatend1")
 
-class Hero(Persona):
+class player(Persona):
     def __init__(self):
         super().__init__("Player")
 
 e = Enemy()
-h = Hero()
+p = player()
 
-while h.health > 0:
+while p.health > 0:
 
     turn = input("Your turn: ")
 
     if turn == "w":
         e.attack()
-        h.attack()
+        p.attack()
 
     elif turn == "d":
-        h.heal()
+        p.heal()
 
     elif turn == "a":
-        h.p_inventory()
-        e.e_inventory()
+        p.p_inventory()
 
     elif turn == "x":
         break
 
-    if h.health <= 0:
-        e.hero_drop()
+    if p.health <= 0:
+        e.player_drop()
         print("GAME OVER")
 
     elif e.health <= 0:
-        h.enemy_drop()
+        p.enemy_drop()
 
