@@ -54,6 +54,8 @@ while p.health > 0:
             break
         elif opt == "n" or turn == "N":
             print("I will stay")
+        else:
+            "Not a option"
         
     if p.health is int and p.health <= 0:
         e.player_drop()
